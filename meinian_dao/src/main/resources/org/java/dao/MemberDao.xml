@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.java.dao.MemberDao">
+
+    <!-- Member getMemberByTelephone(String telephone); -->
+    <select id="getMemberByTelephone" resultType="org.java.pojo.Member">
+        select * from t_member where phoneNumber = #{telephone}
+    </select>
+
+    <!-- void add(Member member); -->
+    <insert id="add" keyProperty="id" useGeneratedKeys="true">
+        insert into t_member(fileNumber, name, sex, idCard, phoneNumber, regTime, password, email, birthday, remark)
+        values(#{fileNumber}, #{name}, #{sex}, #{idCard}, #{phoneNumber}, #{regTime}, #{password}, #{email}, #{birthday}, #{remark})
+    </insert>
+
+    <!-- void update(String name, Integer id); -->
+    <update id="update">
+        update t_member set name = #{name} where id = #{id}
+    </update>
+
+    <!-- int findMemberCountByMonth(String month); -->
+    <select id="findMemberCountByMonth" resultType="int">
+        select COUNT(*) from t_member where regTime &lt;= #{month}
+    </select>
+
+    <!-- int getTodayNewMember(String date); -->
+    <select id="getTodayNewMember" resultType="int">
+        SELECT COUNT(id) FROM t_member WHERE regTime = #{date}
+    </select>
+
+    <!-- int getTotalMember(); -->
+    <select id="getTotalMember" resultType="int">
+        SELECT COUNT(id) FROM t_member
+    </select>
+
+    <!-- int getThisWeekAndMonthNewMember(String date); -->
+    <select id="getThisWeekAndMonthNewMember" resultType="int">
+        SELECT COUNT(id) FROM t_member WHERE regTime &gt;= #{date}
+    </select>
+</mapper>

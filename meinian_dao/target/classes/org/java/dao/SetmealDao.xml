@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.java.dao.SetmealDao">
+
+    <!-- void add(Setmeal setmeal); -->
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into t_setmeal(name, code, helpCode, sex, age, price, remark, attention, img)
+        values(#{name}, #{code}, #{helpCode}, #{sex}, #{age}, #{price}, #{remark}, #{attention}, #{img})
+    </insert>
+
+    <!-- void addSetmealAndTravelGrop(Map<String, Integer> map); -->
+    <insert id="addSetmealAndTravelGrop">
+        insert into t_setmeal_travelgroup values(#{setmealId}, #{travelgroupId})
+    </insert>
+
+    <!-- Page<Setmeal> findPage(String queryString); -->
+    <select id="findPage" resultType="org.java.pojo.Setmeal">
+        select * from t_setmeal
+        <where>
+            <if test="value != null and value.length > 0">
+                code = #{condition} or name like concat("%",#{condition},"%") or helpCode = #{value}
+            </if>
+        </where>
+    </select>
+
+    <!-- void deleteById(Integer id); -->
+    <delete id="deleteById">
+        delete from t_setmeal where id = #{id}
+    </delete>
+
+    <!-- Long findCountBySetmealId(Integer id); -->
+    <select id="findCountBySetmealId" resultType="long">
+        select count(*) from t_setmeal_travelgroup where setmeal_id = #{id}
+    </select>
+
+    <!-- List<Setmeal> findAll(); -->
+    <select id="findAll" resultType="org.java.pojo.Setmeal">
+        select * from t_setmeal
+    </select>
+
+    <resultMap id="setmealResultMap" type="org.java.pojo.Setmeal">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="code" column="code"></result>
+        <result property="helpCode" column="helpCode"></result>
+        <result property="sex" column="sex"></result>
+        <result property="age" column="age"></result>
+        <result property="price" column="price"></result>
+        <result property="remark" column="remark"></result>
+        <result property="attention" column="attention"></result>
+        <result property="img" column="img"></result>
+
+        <collection property="travelGroups" column="id"
+                    select="org.java.dao.TravelGroupDao.findTravelGroupById"></collection>
+    </resultMap>
+    <!-- Setmeal findById(Integer id); -->
+    <select id="findById" resultMap="setmealResultMap">
+        select * from t_setmeal where id = #{id}
+    </select>
+
+    <!-- Setmeal getSetmealById(Integer id); -->
+    <select id="getSetmealById" resultType="org.java.pojo.Setmeal">
+        select * from t_setmeal where id = #{id}
+    </select>
+
+    <!-- List<Map<String, Object>> getSetmealReport(); -->
+    <select id="getSetmealReport" resultType="map">
+        SELECT s.name name,COUNT(o.id) value
+        FROM t_setmeal s,t_order o WHERE s.id = o.setmeal_id
+        GROUP BY s.name
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+

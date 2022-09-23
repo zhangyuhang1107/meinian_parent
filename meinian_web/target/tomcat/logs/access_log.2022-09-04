@@ -1,0 +1,13 @@
+0:0:0:0:0:0:0:1 - - [04/Sep/2022:15:42:38 +0800] "GET /pages/main.html HTTP/1.1" 200 8152 http-bio-82-exec-1 35
+0:0:0:0:0:0:0:1 - - [04/Sep/2022:15:42:38 +0800] "GET /plugins/elementui/index.css HTTP/1.1" 200 198714 http-bio-82-exec-2 7
+0:0:0:0:0:0:0:1 - - [04/Sep/2022:15:42:38 +0800] "GET /css/style.css HTTP/1.1" 200 10588 http-bio-82-exec-4 6
+0:0:0:0:0:0:0:1 - - [04/Sep/2022:15:42:38 +0800] "GET /img/user2-160x160.jpg HTTP/1.1" 200 7786 http-bio-82-exec-6 3
+0:0:0:0:0:0:0:1 - - [04/Sep/2022:15:42:38 +0800] "GET /img/logo.png HTTP/1.1" 200 3503 http-bio-82-exec-5 4
+0:0:0:0:0:0:0:1 - - [04/Sep/2022:15:42:38 +0800] "GET /plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31004 http-bio-82-exec-3 6
+0:0:0:0:0:0:0:1 - - [04/Sep/2022:15:42:38 +0800] "GET /favicon.ico HTTP/1.1" 404 973 http-bio-82-exec-3 3
+0:0:0:0:0:0:0:1 - - [04/Sep/2022:15:42:38 +0800] "GET /pages/travelitem.html HTTP/1.1" 304 - http-bio-82-exec-3 3
+0:0:0:0:0:0:0:1 - - [04/Sep/2022:15:42:38 +0800] "GET /plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160 http-bio-82-exec-3 3
+0:0:0:0:0:0:0:1 - - [04/Sep/2022:15:42:39 +0800] "GET /plugins/elementui/fonts/element-icons.woff HTTP/1.1" 200 6164 http-bio-82-exec-6 2
+0:0:0:0:0:0:0:1 - - [04/Sep/2022:15:42:39 +0800] "POST /travelItem/findPage.do HTTP/1.1" 200 1953 http-bio-82-exec-6 577
+0:0:0:0:0:0:0:1 - - [04/Sep/2022:15:42:45 +0800] "GET /pages/setmeal.html HTTP/1.1" 200 15958 http-bio-82-exec-6 2
+0:0:0:0:0:0:0:1 - - [04/Sep/2022:15:42:46 +0800] "GET /travelGroup/findAll.do HTTP/1.1" 200 3832 http-bio-82-exec-6 38
