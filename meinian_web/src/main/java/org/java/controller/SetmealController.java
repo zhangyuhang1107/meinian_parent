@@ -7,6 +7,7 @@ import org.java.entity.PageResult;
 import org.java.entity.QueryPageBean;
 import org.java.entity.Result;
 import org.java.pojo.Setmeal;
+import org.java.pojo.TravelGroup;
 import org.java.service.SetmealService;
 import org.java.util.QiniuUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import redis.clients.jedis.JedisPool;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -63,10 +65,10 @@ public class SetmealController {
 
     @RequestMapping("/add")
     @PreAuthorize("hasAuthority('SETMEAL_ADD')")
-    public Result add(Integer[] travelgroupIds, @RequestBody Setmeal setmeal) {
+    public Result add(Integer[] travelGroupIds, @RequestBody Setmeal setmeal) {
 
         try {
-            setmealService.add(travelgroupIds, setmeal);
+            setmealService.add(travelGroupIds, setmeal);
             return new Result(true, MessageConstant.ADD_SETMEAL_SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,5 +98,42 @@ public class SetmealController {
             return new Result(false, MessageConstant.DELETE_SETMEAL_FAIL);
         }
 
+    }
+
+    @RequestMapping("/getById")
+    public Result getById(Integer id) {
+
+        try {
+            Setmeal setmeal = setmealService.getSetmealById(id);
+            return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS, setmeal);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, MessageConstant.QUERY_SETMEAL_FAIL);
+        }
+    }
+
+    @RequestMapping("/getTravelGroupIdsBySetmealId")
+    public Result getTravelGroupIdsBySetmealId(Integer setmealId) {
+
+        try {
+            List<Integer> travelGroupIds = setmealService.getTravelGroupIdsBySetmealId(setmealId);
+            return new Result(true, "根据套餐游查询跟团游成功", travelGroupIds);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "根据套餐游查询跟团游失败");
+        }
+    }
+
+    @RequestMapping("/edit")
+    @PreAuthorize("hasAuthority('SETMEAL_EDIT')")
+    public Result update(@RequestBody Setmeal setmeal, Integer[] travelGroupIds) {
+
+        try {
+            setmealService.update(setmeal, travelGroupIds);
+            return new Result(true, MessageConstant.UPDATE_SETMEAL_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, MessageConstant.UPDATE_SETMEAL_FAIL);
+        }
     }
 }

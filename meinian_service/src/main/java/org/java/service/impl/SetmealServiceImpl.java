@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.JedisPool;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class SetmealServiceImpl implements SetmealService {
         Integer setmealId = setmeal.getId();
 
         // 绑定套餐和跟团游的多对多关系
-        setSetmealAndTravelGrop(travelgroupIds, setmealId);
+        setSetmealAndTravelGroup(travelgroupIds, setmealId);
 
         // ******************* 补充代码，解决垃圾图片问题
         String pic = setmeal.getImg();
@@ -46,7 +47,7 @@ public class SetmealServiceImpl implements SetmealService {
         //********************
     }
 
-    private void setSetmealAndTravelGrop(Integer[] travelgroupIds, Integer setmealId) {
+    private void setSetmealAndTravelGroup(Integer[] travelgroupIds, Integer setmealId) {
 
         if (travelgroupIds != null && travelgroupIds.length > 0) {
             for (Integer travelgroupId : travelgroupIds) {
@@ -101,5 +102,54 @@ public class SetmealServiceImpl implements SetmealService {
     public List<Map<String, Object>> getSetmealReport() {
 
         return setmealDao.getSetmealReport();
+    }
+
+    @Override
+    public List<Integer> getTravelGroupIdsBySetmealId(Integer id) {
+
+        return setmealDao.getTravelGroupIdsBySetmealId(id);
+    }
+
+    @Override
+    public void update(Setmeal setmeal, Integer[] travelGroupIds) {
+
+        setmealDao.update(setmeal);
+        Integer id = setmeal.getId();
+
+        // 删除中间表的关联数据
+        setmealDao.deleteTravelGroupIdBySetmealId(id);
+        // 重新添加关联数据
+//        setSetmealAndTravelGroup(travelGroupIds, id);
+        List<Map<String, Object>> paramData = ergodicForTravelGroupIdsArray(id, travelGroupIds);
+        if (paramData != null) {
+            setmealDao.setSetmealIdAndtravelGroupIds(paramData);
+        }
+
+        // ******************* 补充代码，解决垃圾图片问题
+        String pic = setmeal.getImg();
+        jedisPool.getResource().sadd(RedisConstant.SETMEAL_PIC_DB_RESOURCES, pic);
+        //********************
+    }
+
+    /**
+     * 封装数据
+     *
+     * @param setmealId
+     * @param travelGroupIds
+     * @return
+     */
+    private List<Map<String, Object>> ergodicForTravelGroupIdsArray(Integer setmealId, Integer[] travelGroupIds) {
+        if (setmealId != null && travelGroupIds != null && travelGroupIds.length > 0) {
+            List<Map<String, Object>> list = new ArrayList<>();
+            for (Integer travelGroupId : travelGroupIds) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("travelGroupId", travelGroupId);
+                map.put("setmealId", setmealId);
+                list.add(map);
+            }
+            return list;
+        }
+
+        return null;
     }
 }

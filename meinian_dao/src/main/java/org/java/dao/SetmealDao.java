@@ -1,6 +1,8 @@
 package org.java.dao;
 
 import com.github.pagehelper.Page;
+import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Param;
 import org.java.pojo.Setmeal;
 
 import java.util.List;
@@ -27,5 +29,14 @@ public interface SetmealDao {
 
     Setmeal getSetmealById(Integer id);
 
+    @MapKey("name")
     List<Map<String, Object>> getSetmealReport();
+
+    List<Integer> getTravelGroupIdsBySetmealId(Integer id);
+
+    void update(Setmeal setmeal);
+
+    void deleteTravelGroupIdBySetmealId(Integer id);
+
+    void setSetmealIdAndtravelGroupIds(@Param("paramData") List<Map<String, Object>> paramData);
 }

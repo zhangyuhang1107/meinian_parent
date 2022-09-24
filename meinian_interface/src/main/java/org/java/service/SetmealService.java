@@ -28,4 +28,18 @@ public interface SetmealService {
      * @return
      */
     List<Map<String, Object>> getSetmealReport();
+
+    /**
+     * 根据套餐游id查询跟团游id集合
+     * @param id
+     * @return
+     */
+    List<Integer> getTravelGroupIdsBySetmealId(Integer id);
+
+    /**
+     * 修改套餐
+     * @param setmeal
+     * @param travelGroupIds
+     */
+    void update(Setmeal setmeal, Integer[] travelGroupIds);
 }

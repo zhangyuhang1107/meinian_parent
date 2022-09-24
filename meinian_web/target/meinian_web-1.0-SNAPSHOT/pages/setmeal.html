@@ -101,7 +101,7 @@
                 <el-table-column prop="remark" label="说明" align="center"></el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
-                        <el-button type="primary" size="mini">编辑</el-button>
+                        <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
                         <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -223,7 +223,7 @@
                                         <tbody>
                                         <tr v-for="c in tableData">
                                             <td>
-                                                <input :id="c.id" v-model="travelgroupIds" type="checkbox"
+                                                <input :id="c.id" v-model="travelGroupIds" type="checkbox"
                                                        :value="c.id">
                                             </td>
                                             <td><label :for="c.id">{{c.code}}</label></td>
@@ -239,6 +239,120 @@
                     <div slot="footer" class="dialog-footer">
                         <el-button @click="dialogFormVisible = false">取消</el-button>
                         <el-button type="primary" @click="handleAdd()">确定</el-button>
+                    </div>
+                </el-dialog>
+            </div>
+
+            <!-- 编辑标签弹层 -->
+            <div class="add-form">
+                <el-dialog title="编辑套餐" :visible.sync="dialogFormVisibleEdit">
+                    <template>
+                        <el-tabs v-model="activeName" type="card">
+                            <el-tab-pane label="基本信息" name="first">
+                                <el-form label-position="right" label-width="100px">
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <el-form-item label="编码">
+                                                <el-input v-model="formData.code"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-form-item label="名称">
+                                                <el-input v-model="formData.name"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <el-form-item label="适用性别">
+                                                <el-select v-model="formData.sex">
+                                                    <el-option label="不限" value="0"></el-option>
+                                                    <el-option label="男" value="1"></el-option>
+                                                    <el-option label="女" value="2"></el-option>
+                                                </el-select>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-form-item label="助记码">
+                                                <el-input v-model="formData.helpCode"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <el-form-item label="套餐价格">
+                                                <el-input v-model="formData.price"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-form-item label="适用年龄">
+                                                <el-input v-model="formData.age"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="24">
+                                            <el-form-item label="上传图片">
+                                                <el-upload
+                                                        class="avatar-uploader"
+                                                        action="/setmeal/upload.do"
+                                                        :auto-upload="autoUpload"
+                                                        name="imgFile"
+                                                        :show-file-list="false"
+                                                        :on-success="handleAvatarSuccess"
+                                                        :before-upload="beforeAvatarUpload">
+                                                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                                </el-upload>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="24">
+                                            <el-form-item label="说明">
+                                                <el-input v-model="formData.remark" type="textarea"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="24">
+                                            <el-form-item label="注意事项">
+                                                <el-input v-model="formData.attention" type="textarea"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                </el-form>
+                            </el-tab-pane>
+                            <el-tab-pane label="跟团游信息" name="second">
+                                <div class="checkScrol">
+                                    <table class="datatable">
+                                        <thead>
+                                        <tr>
+                                            <th>选择</th>
+                                            <th>项目编码</th>
+                                            <th>项目名称</th>
+                                            <th>项目说明</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="c in tableData">
+                                            <td>
+                                                <input :id="c.id" v-model="travelGroupIds" type="checkbox"
+                                                       :value="c.id">
+                                            </td>
+                                            <td><label :for="c.id">{{c.code}}</label></td>
+                                            <td><label :for="c.id">{{c.name}}</label></td>
+                                            <td><label :for="c.id">{{c.remark}}</label></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </el-tab-pane>
+                        </el-tabs>
+                    </template>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="dialogFormVisibleEdit = false">取消</el-button>
+                        <el-button type="primary" @click="handleEdit()">确定</el-button>
                     </div>
                 </el-dialog>
             </div>
@@ -263,8 +377,9 @@
             dataList: [],//列表数据
             formData: {},//表单数据
             tableData: [],//添加表单窗口中跟团游列表数据
-            travelgroupIds: [],//添加表单窗口中跟团游复选框对应id
+            travelGroupIds: [],//添加表单窗口中跟团游复选框对应id
             dialogFormVisible: false,//控制添加窗口显示/隐藏
+            dialogFormVisibleEdit: false,
             rules: {
                 code: [{required: true, message: '编码为必填项', trigger: 'blur'}],
                 name: [{required: true, message: '名称为必填项', trigger: 'blur'}],
@@ -313,7 +428,7 @@
                 // 表单校验是否成功，成功可以提交表单，否则不能提交
                 this.$refs['dataAddForm'].validate((valid) => {
                     if (valid) {
-                        axios.post("/setmeal/add.do?travelgroupIds=" + this.travelgroupIds, this.formData).then((resp) => {
+                        axios.post("/setmeal/add.do?travelGroupIds=" + this.travelGroupIds, this.formData).then((resp) => {
                             if (resp.data.flag) {
                                 this.dialogFormVisible = false;
                                 this.$message.success(resp.data.message);
@@ -355,7 +470,7 @@
                 // 选项卡设置成第一个
                 this.activeName = "first";
                 // 重置跟团游的复选框
-                this.travelgroupIds = [];
+                this.travelGroupIds = [];
                 // 重置上传的图片路径
                 this.imageUrl = null;
             },
@@ -398,6 +513,55 @@
                     });
                 }).catch(() => { // 取消操作
                     this.$message.info("已取消删除");
+                });
+            },
+
+            // 弹出编辑窗口
+            handleUpdate(row) {
+                this.resetForm();
+                // 1. 回显表单
+                axios.get("/setmeal/getById.do?id=" + row.id).then((resp) => {
+                    if (resp.data.flag) {
+                        this.activeName = "first";
+                        this.dialogFormVisibleEdit = true;
+                        // 模型数据赋值
+                        this.formData = resp.data.data;
+                        this.imageUrl = "http://rhn93g9ay.hn-bkt.clouddn.com/" + resp.data.data.img;
+                        this.$message.success(resp.data.message);
+
+                        // 2. 回显跟团游列表数据
+                        axios.get("/travelGroup/findAll.do").then((resp) => {
+                            if (resp.data.flag) {
+                                this.tableData = resp.data.data;
+
+                                // 3. 回显套餐游和自由行关联数据，复选框打勾
+                                axios.get("/setmeal/getTravelGroupIdsBySetmealId.do?setmealId=" + row.id).then((resp) => {
+                                    // 回显数据关系，打勾
+                                    this.travelGroupIds = resp.data.data;
+                                });
+                            } else {
+                                this.$message.error(resp.data.message);
+                            }
+                        });
+                    } else {
+                        this.$message.error("获取数据失败，请刷新当前页面");
+                    }
+                });
+            },
+
+            // 编辑
+            handleEdit() {
+                axios.post("/setmeal/edit.do?travelGroupIds=" + this.travelGroupIds, this.formData).then((resp) => {
+                    if (resp.data.flag) {
+                        this.$message.success(resp.data.message);
+                        // 刷新数据
+                        this.findPage();
+                    } else {
+                        this.$message.error(resp.data.message);
+                    }
+                }).finally(() => {
+                    // 关闭窗口
+                    this.dialogFormVisibleEdit = false;
                 });
             }
         }
