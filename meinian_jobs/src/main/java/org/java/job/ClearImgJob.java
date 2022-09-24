@@ -24,7 +24,7 @@ public class ClearImgJob {
             System.out.println("删除垃圾图片：pic = " + pic);
             // 删除图片服务器中的图片文件
             QiniuUtils.deleteFileFromQiniu(pic);
-            // 删除redis中的数据
+            // 删除redis中数据
             jedisPool.getResource().srem(RedisConstant.SETMEAL_PIC_RESOURCES, pic);
         }
     }
